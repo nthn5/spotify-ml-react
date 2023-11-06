@@ -1,9 +1,12 @@
 import './App.css';
 import { useState, useEffect } from 'react';
+import { Emotions } from './components/emotions';
 
 function App() {
   useEffect(() => {
-    authorize();
+    authorize().then(
+      postUsername()
+    );
   }, []);
   
   //Sign In Stuff
@@ -105,17 +108,42 @@ function App() {
       console.error('Error:', error);
     });
   }
+  const postUsername = async () => {
+    await fetch('http://localhost:5000/post_username', {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        username: localStorage.getItem('user_id')
+      })
+    });
+  }
 
   //Actual Functions
   //-------------------------------------------------------------------------------------
-  const test = async () => {
-    await fetch('http://localhost:5000/test');
+  const [emotions, setEmotions] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
+
+  const playlists = async () => {
+    const response = await fetch('http://localhost:5000/playlists');
+    const data = await response.json();
+    setEmotions(data);
+    console.log(data);
   }
 
+  //might want to make it all work first, then experiment with using components for each item
   return (
     <div>
-      <button onClick={signIn}>sign in</button>
-      <button onClick={test}>testing</button>
+      <div id='buttons'>
+        <button onClick={signIn}>sign in</button>
+        <button onClick={playlists}>generate</button>
+      </div>
+      <div id='emotions'>
+        <Emotions emotion={emotions} name='sad'></Emotions>
+        <Emotions emotion={emotions} name='calm'></Emotions>
+        <Emotions emotion={emotions} name='happy'></Emotions>
+        <Emotions emotion={emotions} name='energetic'></Emotions>
+      </div>
     </div>
   );
 }
