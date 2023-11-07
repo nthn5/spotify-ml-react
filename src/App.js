@@ -122,27 +122,47 @@ function App() {
 
   //Actual Functions
   //-------------------------------------------------------------------------------------
-  const [emotions, setEmotions] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
+  const [moods, setMoods] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
+  const [seeds, setSeeds] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
+  const [recs, setRecs] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
+  const [mood, setMood] = useState('sad');
+  const [song, setSong] = useState('');
 
   const playlists = async () => {
-    const response = await fetch('http://localhost:5000/playlists');
-    const data = await response.json();
-    setEmotions(data);
-    console.log(data);
+    await fetch('http://localhost:5000/playlists').then(async response => {
+      await response.json().then(async songs => {
+        setMoods(songs);
+        await fetch('http://localhost:5000/randomizeSeeds').then(async response => {
+          await response.json().then(async seeds => {
+            setSeeds(seeds);
+            await fetch('http://localhost:5000/getRecs').then(async response => {
+              await response.json().then(async recs => {
+                setRecs(recs);
+              });
+            });
+          });
+        });
+      });
+    });
+  }
+  
+  const changeMood = (e) => {
+    setMood(e.target.id);
   }
 
   //might want to make it all work first, then experiment with using components for each item
   return (
     <div>
-      <div id='buttons'>
-        <button onClick={signIn}>sign in</button>
-        <button onClick={playlists}>generate</button>
-      </div>
-      <div id='emotions'>
-        <Emotions emotion={emotions} name='sad'></Emotions>
-        <Emotions emotion={emotions} name='calm'></Emotions>
-        <Emotions emotion={emotions} name='happy'></Emotions>
-        <Emotions emotion={emotions} name='energetic'></Emotions>
+      <div id='body'>
+        <div id='emotions'>
+          <button onClick={signIn}>sign in</button>
+          <button onClick={playlists}>generate</button>
+          <button onClick={changeMood} id='sad'>sad</button>
+          <button onClick={changeMood} id='calm'>calm</button>
+          <button onClick={changeMood} id='happy'>happy</button>
+          <button onClick={changeMood} id='energetic'>energetic</button>
+        </div>
+        <Emotions moods={moods} seeds={seeds} recs={recs} mood={mood} setSeeds={setSeeds} setRecs={setRecs}></Emotions>
       </div>
     </div>
   );
