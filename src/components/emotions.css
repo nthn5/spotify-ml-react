@@ -5,31 +5,46 @@
 }
 
 #songs{
-    height: 75vh;
+    height: 100%;
     overflow-y: auto;
     margin-right: auto;
     width: 100%;
+    overflow: overlay;
 }
 
-#track{
+::-webkit-scrollbar{
+    background-color: transparent;
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    height: 28px;
+  }
+
+.track{
     margin-top: 10px;
     display: flex;
     margin-right: auto;
-    gap: 5px;
+    gap: 10px;
+    width: 100%;
+}
+.track:hover{
+    cursor:pointer;
 }
 
-h5{
+h4{
     margin: 0;
 }
 
-h6{
+h5{
     margin: 0;
     color: rgb(175, 175, 175);
 }
 
 img{
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
 }
 
 #seeds{
@@ -49,28 +64,38 @@ img{
     width: 100%;
 }
 
-#seeds-cont{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 25vw;
-}
-
-#recs-cont{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 25vw;
-}
-
 #right-cont{
     display: flex;
     flex-direction: column;
 }
 
-#songs-cont{
+h2{
+    margin: 15px;
+    border-bottom: 1px solid gray;
+    width: 100%;
+}
+
+.cont{
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 25vw;
+    padding: 25px;
+    padding-top: 0;
+    height: 80vh;
+}
+
+.border{
+    height: 80vh;
+    border-radius: 8%;
+    background-color: rgb(25, 25, 25);
+    margin-top: 8px;
+}
+
+.shuffle-recs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 }

@@ -1,6 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import { Emotions } from './components/emotions';
+import { Player } from './components/player';
 
 function App() {
   useEffect(() => {
@@ -126,7 +127,8 @@ function App() {
   const [seeds, setSeeds] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
   const [recs, setRecs] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
   const [mood, setMood] = useState('sad');
-  const [song, setSong] = useState('');
+  const [song, setSong] = useState({'': {'name': null, 'artist': null, 'cover': null, 'preview': null, }});
+  //change cover to a gray picture
 
   const playlists = async () => {
     await fetch('http://localhost:5000/playlists').then(async response => {
@@ -162,8 +164,9 @@ function App() {
           <button onClick={changeMood} id='happy'>happy</button>
           <button onClick={changeMood} id='energetic'>energetic</button>
         </div>
-        <Emotions moods={moods} seeds={seeds} recs={recs} mood={mood} setSeeds={setSeeds} setRecs={setRecs}></Emotions>
+        <Emotions setSong={setSong} moods={moods} seeds={seeds} recs={recs} mood={mood} setSeeds={setSeeds} setRecs={setRecs}></Emotions>
       </div>
+      <Player song={song} setSong={setSong}></Player>
     </div>
   );
 }

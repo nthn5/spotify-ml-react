@@ -2,12 +2,46 @@ import './emotions.css';
 
 const Emotions = (props) => {
 
-    //make it so that it sends request to change seeds to flask (need to set that up)
-    const drag = () => {
-        
+    const dragStart = (e) => {
+        while(!e.target.id){
+            e.target = e.target.parentNode;
+        }
+        e.dataTransfer.setData('dragged-song', JSON.stringify({'id': e.target.id, 'name': e.target.getAttribute('name'), 'artist': e.target.getAttribute('artist'), 'cover': e.target.getAttribute('cover'), 'preview': e.target.getAttribute('preview'),}));
     }
-    const drop = () => {
-       
+    const drop = async (e) => {
+        while(!e.target.id){
+            e.target = e.target.parentNode;
+        }
+        let draggedSong = e.dataTransfer.getData('dragged-song');
+        draggedSong = JSON.parse(draggedSong);
+        for (let i in props.seeds[props.mood]){
+            if (e.target.id === i){
+                await fetch('http://localhost:5000/seedSwitch', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify({
+                        newSeed: draggedSong['id'],
+                        oldSeed: i,
+                        mood: props.mood,
+                        attr: {
+                            name: draggedSong['name'],
+                            artist: draggedSong['artist'],
+                            cover: draggedSong['cover'],
+                            preview: draggedSong['preview']
+                        }
+                    })
+                }).then(async response => {
+                    await response.json().then(async seeds => {
+                        console.log(props.seeds);
+                        props.setSeeds(seeds);
+                        console.log(seeds);
+                    });
+                });
+            }
+        }
+
     }
     const dragOver = (e) => {
         e.preventDefault();
@@ -44,59 +78,75 @@ const Emotions = (props) => {
             });
         });
     }
+    const selectSong = (e) => {
+        while(!e.target.id){
+            e.target = e.target.parentNode;
+        }
+        const song = {};
+        song[e.target.id] = {'name': e.target.getAttribute('name'), 'artist': e.target.getAttribute('artist'), 'cover': e.target.getAttribute('cover'), 'preview': e.target.getAttribute('preview')};
+        props.setSong(song);
+    }
 
     return (
         <div id='container'>
-            <div id='songs-cont'>
-                <h4>{props.mood}</h4>
-                <div id='songs'>
-                    {
-                        Object.entries(props.moods[props.mood]).map(([key, value]) => (
-                            <div key={key} id='track' draggable='true' onDrag={drag}>
-                                <img src={value[2]} alt='cover art'></img>
-                                <div>
-                                    <h5>{value[0]}</h5>
-                                    <h6>{value[1]}</h6>
+            <div className='border'>
+                <div id='songs-cont' className='cont'>
+                    <h2>{props.mood}</h2>
+                    <div id='songs'>
+                        {
+                            Object.entries(props.moods[props.mood]).map(([key, value]) => (
+                                <div id={key} className='track' name={value['name']} artist={value['artist']} cover={value['cover']} preview={value['preview']} draggable='true' onDragStart={dragStart}>
+                                    <img src={value['cover']} alt='cover art'></img>
+                                    <div>
+                                        <h4>{value['name']}</h4>
+                                        <h5>{value['artist']}</h5>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    }
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
-            <div id='seeds-cont'>
-                <h4>seeds</h4>
-                <div id='seeds'>
-                    {
-                        Object.entries(props.seeds[props.mood]).map(([key, value]) => (
-                            <div key={key} id='track' onDragOver={dragOver} onDrop={drop}>
-                                <img src={value[2]} alt='cover art'></img>
-                                <div>
-                                    <h5>{value[0]}</h5>
-                                    <h6>{value[1]}</h6>
+            <div className='border'>
+                <div id='seeds-cont' className='cont'>
+                    <h2>seeds</h2>
+                    <div id='seeds'>
+                        {
+                            Object.entries(props.seeds[props.mood]).map(([key, value]) => (
+                                <div id={key} className='track' onDragOver={dragOver} onDrop={drop}>
+                                    <img src={value['cover']} alt='cover art'></img>
+                                    <div>
+                                        <h4>{value['name']}</h4>
+                                        <h5>{value['artist']}</h5>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    }
-                </div>
-                <div>
-                    <button id='shuffle' onClick={shuffle}>shuffle</button>
-                    <button id='get-recs' onClick={getRecs}>get recs</button>
+                            ))
+                        }
+                    </div>
+                    <div className='shuffle-recs'>
+                        <button id='shuffle' onClick={shuffle}>shuffle</button>
+                    </div>
                 </div>
             </div>
-            <div id='recs-cont'>
-                <h4>recs</h4>
-                <div id='recs'>
-                    {
-                        Object.entries(props.recs[props.mood]).map(([key, value]) => (
-                            <div key={key} id='track'>
-                                <img src={value[2]} alt='cover art'></img>
-                                <div>
-                                    <h5>{value[0]}</h5>
-                                    <h6>{value[1]}</h6>
+            <div className='border'>
+                <div id='recs-cont' className='cont'>
+                    <h2>recs</h2>
+                    <div id='recs'>
+                        {
+                            Object.entries(props.recs[props.mood]).map(([key, value]) => (
+                                <div id={key} className='track' name={value['name']} artist={value['artist']} cover={value['cover']} preview={value['preview']} onClick={selectSong}>
+                                    <img src={value['cover']} alt='cover art'></img>
+                                    <div>
+                                        <h4>{value['name']}</h4>
+                                        <h5>{value['artist']}</h5>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    }
+                            ))
+                        }
+                    </div>
+                    <div className='shuffle-recs'>
+                        <button id='get-recs' onClick={getRecs}>get recs</button>
+                    </div>
                 </div>
             </div>
         </div>
