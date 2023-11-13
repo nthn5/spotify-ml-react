@@ -128,12 +128,14 @@ function App() {
   const [recs, setRecs] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
   const [mood, setMood] = useState('sad');
   const [song, setSong] = useState({'': {'name': null, 'artist': null, 'cover': null, 'preview': null, }});
+  const [backupMoods, setBackupMoods] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
   //change cover to a gray picture
 
   const playlists = async () => {
     await fetch('http://localhost:5000/playlists').then(async response => {
       await response.json().then(async songs => {
         setMoods(songs);
+        setBackupMoods(songs);
         await fetch('http://localhost:5000/randomizeSeeds').then(async response => {
           await response.json().then(async seeds => {
             setSeeds(seeds);
@@ -147,7 +149,7 @@ function App() {
       });
     });
   }
-  
+
   const changeMood = (e) => {
     setMood(e.target.id);
   }
@@ -163,8 +165,9 @@ function App() {
           <button onClick={changeMood} id='calm'>calm</button>
           <button onClick={changeMood} id='happy'>happy</button>
           <button onClick={changeMood} id='energetic'>energetic</button>
+          <button onClick={changeMood} id='all'>all</button>
         </div>
-        <Emotions setSong={setSong} moods={moods} seeds={seeds} recs={recs} mood={mood} setSeeds={setSeeds} setRecs={setRecs}></Emotions>
+        <Emotions backupMoods={backupMoods} setBackupMoods={setBackupMoods} setSong={setSong} moods={moods} seeds={seeds} recs={recs} mood={mood} setSeeds={setSeeds} setRecs={setRecs} setMoods={setMoods}></Emotions>
       </div>
       <Player song={song} setSong={setSong}></Player>
     </div>

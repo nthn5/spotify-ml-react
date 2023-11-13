@@ -87,15 +87,31 @@ const Emotions = (props) => {
         props.setSong(song);
     }
 
+    const search = (e) => {
+        const matches = {};
+        const search = e.target.value;
+        for (let i of Object.keys(props.backupMoods[props.mood])){
+            if (props.backupMoods[props.mood][i]['name'].toLowerCase().includes(search.toLowerCase()) || props.backupMoods[props.mood][i]['artist'].toLowerCase().includes(search.toLowerCase())){
+                matches[i] = (props.backupMoods[props.mood][i]);
+            }
+        }
+        const moods = {'sad': props.moods['sad'], 'calm': props.moods['calm'], 'happy': props.moods['happy'], 'energetic': props.moods['energetic']}
+        moods[props.mood] = matches;
+        props.setMoods(moods);
+    }
+
     return (
         <div id='container'>
             <div className='border'>
                 <div id='songs-cont' className='cont'>
-                    <h2>{props.mood}</h2>
+                    <div id='search-cont'>
+                        <h2 id='seeds-label'>{props.mood}</h2>
+                        <input onChange={search}></input>
+                    </div>
                     <div id='songs'>
                         {
                             Object.entries(props.moods[props.mood]).map(([key, value]) => (
-                                <div id={key} className='track' name={value['name']} artist={value['artist']} cover={value['cover']} preview={value['preview']} draggable='true' onDragStart={dragStart}>
+                                <div id={key} className='track' name={value['name']} artist={value['artist']} cover={value['cover']} preview={value['preview']} draggable='true' onDragStart={dragStart} onClick={selectSong}>
                                     <img src={value['cover']} alt='cover art'></img>
                                     <div>
                                         <h4>{value['name']}</h4>
@@ -113,7 +129,7 @@ const Emotions = (props) => {
                     <div id='seeds'>
                         {
                             Object.entries(props.seeds[props.mood]).map(([key, value]) => (
-                                <div id={key} className='track' onDragOver={dragOver} onDrop={drop}>
+                                <div id={key} className='track' onDragOver={dragOver} onDrop={drop} onClick={selectSong}>
                                     <img src={value['cover']} alt='cover art'></img>
                                     <div>
                                         <h4>{value['name']}</h4>
@@ -134,7 +150,7 @@ const Emotions = (props) => {
                     <div id='recs'>
                         {
                             Object.entries(props.recs[props.mood]).map(([key, value]) => (
-                                <div id={key} className='track' name={value['name']} artist={value['artist']} cover={value['cover']} preview={value['preview']} onClick={selectSong}>
+                                <div id={key} className='track' name={value['name']} artist={value['artist']} cover={value['cover']} preview={value['preview']} onClick={selectSong} draggable='true' onDragStart={dragStart}>
                                     <img src={value['cover']} alt='cover art'></img>
                                     <div>
                                         <h4>{value['name']}</h4>

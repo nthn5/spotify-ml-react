@@ -3,7 +3,15 @@ import './player.css';
 const Player = (props) => {
 
     const add = async () => {
-
+        await fetch('http://localhost:5000/addRec', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id: Object.keys(props.song)[0]
+            })
+        });
     }
 
     return (
