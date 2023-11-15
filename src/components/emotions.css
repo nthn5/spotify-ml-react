@@ -112,6 +112,13 @@ h2{
 input{
     height: 20px;
     width: 100%;
+    outline: 0;
+    border: 0;
+    border-bottom: 1px solid gray;
+    background-color: rgb(25, 25, 25);
+}
+input:focus{
+    border-color: white;
 }
 
 #seeds-label{

@@ -154,18 +154,37 @@ function App() {
     setMood(e.target.id);
   }
 
+  const create = async () => {
+    await fetch('http://localhost:5000/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+            moods: backupMoods
+        })
+    });
+  }
+
   //might want to make it all work first, then experiment with using components for each item
   return (
     <div>
       <div id='body'>
         <div id='emotions'>
-          <button onClick={signIn}>sign in</button>
-          <button onClick={playlists}>generate</button>
-          <button onClick={changeMood} id='sad'>sad</button>
-          <button onClick={changeMood} id='calm'>calm</button>
-          <button onClick={changeMood} id='happy'>happy</button>
-          <button onClick={changeMood} id='energetic'>energetic</button>
-          <button onClick={changeMood} id='all'>all</button>
+          <div className='btns'>
+            <button onClick={signIn}>sign in</button>
+            <button onClick={playlists}>generate</button>
+          </div>
+          <div className='btns'>
+            <button onClick={changeMood} id='sad'>sad</button>
+            <button onClick={changeMood} id='calm'>calm</button>
+            <button onClick={changeMood} id='happy'>happy</button>
+            <button onClick={changeMood} id='energetic'>energetic</button>
+            <button onClick={changeMood} id='all'>all</button>
+          </div>
+          <div className='btns'>
+            <button onClick={create} id='create'>add playlists</button>
+          </div>
         </div>
         <Emotions backupMoods={backupMoods} setBackupMoods={setBackupMoods} setSong={setSong} moods={moods} seeds={seeds} recs={recs} mood={mood} setSeeds={setSeeds} setRecs={setRecs} setMoods={setMoods}></Emotions>
       </div>

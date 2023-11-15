@@ -12,3 +12,22 @@ html{
 #body{
   display: flex;
 }
+
+.btns{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 8%;
+  background-color: rgb(25, 25, 25);
+  margin-top: 8px;
+  padding: 15px;
+}
+
+button{
+  all: unset;
+  padding: 8px;
+  border-radius: 8px;
+}
+button:hover{
+  background: rgb(75, 75, 75);
+}
