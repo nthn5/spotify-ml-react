@@ -11,6 +11,13 @@ const Player = (props) => {
             body: JSON.stringify({
                 id: Object.keys(props.song)[0]
             })
+        }).then(async response => {
+            if(response.ok){
+                alert('song added successfully');
+            }
+            else{
+                alert('error');
+            }
         });
     }
 

@@ -132,6 +132,7 @@ function App() {
   //change cover to a gray picture
 
   const playlists = async () => {
+    alert('generating playlists');
     await fetch('http://localhost:5000/playlists').then(async response => {
       await response.json().then(async songs => {
         setMoods(songs);
