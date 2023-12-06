@@ -123,12 +123,12 @@ function App() {
 
   //Actual Functions
   //-------------------------------------------------------------------------------------
-  const [moods, setMoods] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
-  const [seeds, setSeeds] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
-  const [recs, setRecs] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
+  const [moods, setMoods] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}, 'all': {}});
+  const [seeds, setSeeds] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}, 'all': {}});
+  const [recs, setRecs] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}, 'all': {}});
   const [mood, setMood] = useState('sad');
   const [song, setSong] = useState({'': {'name': null, 'artist': null, 'cover': null, 'preview': null, }});
-  const [backupMoods, setBackupMoods] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}});
+  const [backupMoods, setBackupMoods] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}, 'all': {}});
   //change cover to a gray picture
 
   const playlists = async () => {

@@ -34,9 +34,7 @@ const Emotions = (props) => {
                     })
                 }).then(async response => {
                     await response.json().then(async seeds => {
-                        console.log(props.seeds);
                         props.setSeeds(seeds);
-                        console.log(seeds);
                     });
                 });
             }
@@ -79,6 +77,7 @@ const Emotions = (props) => {
         });
     }
     const selectSong = (e) => {
+        
         while(!e.target.id){
             e.target = e.target.parentNode;
         }
@@ -129,7 +128,7 @@ const Emotions = (props) => {
                     <div id='seeds'>
                         {
                             Object.entries(props.seeds[props.mood]).map(([key, value]) => (
-                                <div id={key} className='track' onDragOver={dragOver} onDrop={drop} onClick={selectSong}>
+                                <div id={key} className='track' name={value['name']} artist={value['artist']} cover={value['cover']} preview={value['preview']} onDragOver={dragOver} onDrop={drop} onClick={selectSong}>
                                     <img src={value['cover']} alt='cover art'></img>
                                     <div>
                                         <h4>{value['name']}</h4>
