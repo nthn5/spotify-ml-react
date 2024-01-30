@@ -126,7 +126,7 @@ function App() {
   const [moods, setMoods] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}, 'all': {}});
   const [seeds, setSeeds] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}, 'all': {}});
   const [recs, setRecs] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}, 'all': {}});
-  const [mood, setMood] = useState('sad');
+  const [mood, setMood] = useState('all');
   const [song, setSong] = useState({'': {'name': null, 'artist': null, 'cover': null, 'preview': null, }});
   const [backupMoods, setBackupMoods] = useState({'sad': {}, 'calm': {}, 'happy': {}, 'energetic': {}, 'all': {}});
   //change cover to a gray picture
@@ -177,11 +177,11 @@ function App() {
             <button onClick={playlists}>generate</button>
           </div>
           <div className='btns'>
+            <button onClick={changeMood} id='all'>all</button>
             <button onClick={changeMood} id='sad'>sad</button>
             <button onClick={changeMood} id='calm'>calm</button>
             <button onClick={changeMood} id='happy'>happy</button>
             <button onClick={changeMood} id='energetic'>energetic</button>
-            <button onClick={changeMood} id='all'>all</button>
           </div>
           <div className='btns'>
             <button onClick={create} id='create'>add playlists</button>
